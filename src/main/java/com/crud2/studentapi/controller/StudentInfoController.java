@@ -15,8 +15,6 @@ import java.util.List;
 public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
-    @Autowired
-    private StudentInfoRepository studentInfoRepository;
 
     @PostMapping
     public ResponseEntity<StudentInfoDTO> createStudentInfo(@RequestBody StudentInfoDTO studentInfoDTO) {
@@ -33,8 +31,8 @@ public class StudentInfoController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> deleteStudentInfo(@RequestBody StudentInfoDTO studentInfoDTO){
-        studentInfoService.deleteStudentInfo(studentInfoDTO.getStudentId());
+    public ResponseEntity<String> deleteStudentInfo(@PathVariable Long id)  {
+      studentInfoService.deleteStudentInfo(id);
         return ResponseEntity.ok("Student deleted successfully");
     }
 }

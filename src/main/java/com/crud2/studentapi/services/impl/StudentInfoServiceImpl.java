@@ -55,7 +55,6 @@ private StudentInfoRepository studentInfoRepository;
     @Override
     public void deleteStudentInfo(Long studentId) {
 
-
         // Check if the student exists
         if (!studentInfoRepository.existsById(studentId)){
             throw new EntityNotFoundException("Student not found with ID: " + studentId);
