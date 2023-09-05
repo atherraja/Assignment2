@@ -16,7 +16,7 @@ public class StudentInfoDTO {
     private String studentName;
     private String fatherName;
     private int rollNo;
-    @Enumerated(EnumType.ORDINAL)
+
     private Status status;
     private List<StudentContactInfo> studentContactInfo;
 

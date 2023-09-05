@@ -2,6 +2,7 @@ package com.crud2.studentapi.services.impl;
 
 import com.crud2.studentapi.dtos.StudentContactInfoDTO;
 import com.crud2.studentapi.dtos.StudentInfoDTO;
+import com.crud2.studentapi.entities.Status;
 import com.crud2.studentapi.entities.StudentContactInfo;
 import com.crud2.studentapi.entities.StudentInfo;
 import com.crud2.studentapi.repos.StudentInfoRepository;
@@ -21,9 +22,7 @@ private StudentInfoRepository studentInfoRepository;
     public StudentInfoDTO createStudentInfo(StudentInfoDTO studentInfoDTO) {
         StudentInfo studentInfo = mapToEntity(studentInfoDTO);
         StudentInfo createdStudentInfo = studentInfoRepository.save(studentInfo);
-        StudentInfoDTO studentInfoDTO1 = mapToDTO(createdStudentInfo);
-
-        return studentInfoDTO;
+        return mapToDTO(createdStudentInfo);
     }
     @Override
     public List<StudentInfoDTO> getAllStudentInfo() {
@@ -32,26 +31,44 @@ private StudentInfoRepository studentInfoRepository;
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
-
+    @Override
+    public List<StudentInfoDTO> getValidStudents() {
+        List<StudentInfo> studentInfoList = studentInfoRepository.findByStatusNot(Status.CANCELED);
+        return studentInfoList.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
     @Override
     public StudentInfoDTO updateStudentInfo(Long studentId, StudentInfoDTO studentInfoDTO) {
-        StudentInfo studentInfo = mapToEntity(studentInfoDTO);
-        StudentInfo updateStudentInfo = studentInfoRepository.findById(studentInfoDTO.getStudentId())
+        //StudentInfo studentInfo = mapToEntity(studentInfoDTO);
+
+        // Check if the studentInfo with the given ID exists
+        StudentInfo existingStudentInfo = studentInfoRepository.findById(studentInfoDTO.getStudentId())
                 .orElseThrow(()-> new EntityNotFoundException(("Student not found with ID: " + studentInfoDTO.getStudentId())));
 
         // Update student information
-        studentInfo.setStudentName(studentInfoDTO.getStudentName());
-        studentInfo.setFatherName(studentInfoDTO.getFatherName());
-        studentInfo.setRollNo(studentInfoDTO.getRollNo());
-        studentInfo.setStatus(studentInfoDTO.getStatus());
+        existingStudentInfo.setStudentName(studentInfoDTO.getStudentName());
+        existingStudentInfo.setFatherName(studentInfoDTO.getFatherName());
+        existingStudentInfo.setRollNo(studentInfoDTO.getRollNo());
+        existingStudentInfo.setStatus(studentInfoDTO.getStatus());
 
         // Save the updated studentInfo
-        StudentInfo studentInfo1 = studentInfoRepository.save(studentInfo);
+        StudentInfo studentInfo1 = studentInfoRepository.save(existingStudentInfo);
 
         // Map the updated student to the DTO and return it
         return mapToDTO(studentInfo1);
     }
+    @Override
+    public StudentInfoDTO cancelStudentRegistration(Long id) {
+        StudentInfo studentInfo = studentInfoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID" + id));
 
+        // Update the student's registration status to "Canceled" or set it your desired status
+        studentInfo.setStatus(studentInfo.getStatus());
+        studentInfoRepository.save(studentInfo);
+        return mapToDTO(studentInfo);
+
+    }
     @Override
     public void deleteStudentInfo(Long studentId) {
 

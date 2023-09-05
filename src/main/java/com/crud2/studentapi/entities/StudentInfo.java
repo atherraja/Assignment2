@@ -16,7 +16,7 @@ public class StudentInfo {
     private String studentName;
     private String fatherName;
     private int rollNo;
-    @Enumerated(EnumType.ORDINAL)
+    //@Enumerated(EnumType.ORDINAL)
     private Status status;
 
     @OneToMany(mappedBy = "studentInfo", cascade = CascadeType.ALL)
