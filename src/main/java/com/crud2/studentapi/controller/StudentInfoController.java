@@ -2,7 +2,6 @@ package com.crud2.studentapi.controller;
 
 import com.crud2.studentapi.dtos.StudentInfoDTO;
 import com.crud2.studentapi.entities.Status;
-import com.crud2.studentapi.entities.StudentInfo;
 import com.crud2.studentapi.services.interfaces.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +27,11 @@ public class StudentInfoController {
     public List<StudentInfoDTO> getValidStudents(){
         return studentInfoService.getValidStudents();
     }
-
     @PutMapping("update/{id}")
     public StudentInfoDTO updateStudentInfo(@RequestBody StudentInfoDTO studentInfoDTO) {
         return studentInfoService.updateStudentInfo(studentInfoDTO.getStudentId(), studentInfoDTO );
     }
-    @PutMapping("cancel-registration/{id}")
-    public ResponseEntity<String> cancelStudentRegistration(@PathVariable Long id) {
-        studentInfoService.cancelStudentRegistration(id);
-        return ResponseEntity.ok("Student registration canceled successfully");
-    }
+
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteStudentInfo(@PathVariable Long id)  {
       studentInfoService.deleteStudentInfo(id);

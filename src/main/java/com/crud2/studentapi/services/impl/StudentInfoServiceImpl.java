@@ -38,6 +38,7 @@ private StudentInfoRepository studentInfoRepository;
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+
     @Override
     public StudentInfoDTO updateStudentInfo(Long studentId, StudentInfoDTO studentInfoDTO) {
         //StudentInfo studentInfo = mapToEntity(studentInfoDTO);
@@ -58,17 +59,15 @@ private StudentInfoRepository studentInfoRepository;
         // Map the updated student to the DTO and return it
         return mapToDTO(studentInfo1);
     }
-    @Override
-    public StudentInfoDTO cancelStudentRegistration(Long id) {
-        StudentInfo studentInfo = studentInfoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID" + id));
 
-        // Update the student's registration status to "Canceled" or set it your desired status
-        studentInfo.setStatus(studentInfo.getStatus());
-        studentInfoRepository.save(studentInfo);
-        return mapToDTO(studentInfo);
-
-    }
+//    public StudentInfoDTO cancelStudentRegistration(Status status) {
+//        StudentInfo studentInfo = (StudentInfo) studentInfoRepository.findByStatus(Status.CANCELED);
+//        // Update the student's registration status to "Canceled" or set it your desired status
+//        studentInfo.setStatus(Status.CANCELED);
+//        studentInfoRepository.save(studentInfo);
+//        return mapToDTO(studentInfo);
+//
+//    }
     @Override
     public void deleteStudentInfo(Long studentId) {
 
@@ -76,11 +75,12 @@ private StudentInfoRepository studentInfoRepository;
         if (!studentInfoRepository.existsById(studentId)){
             throw new EntityNotFoundException("Student not found with ID: " + studentId);
         }
-
         // Delete the student by ID
         studentInfoRepository.deleteById(studentId);
-
     }
+
+
+
 
 
     //mapToEntity & mapToDTO
