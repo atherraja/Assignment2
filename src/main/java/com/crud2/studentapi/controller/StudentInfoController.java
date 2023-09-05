@@ -28,7 +28,6 @@ public class StudentInfoController {
     public List<StudentInfoDTO> getValidStudents(){
         return studentInfoService.getValidStudents();
     }
-
     @PutMapping("update/{id}")
     public StudentInfoDTO updateStudentInfo(@RequestBody StudentInfoDTO studentInfoDTO) {
         return studentInfoService.updateStudentInfo(studentInfoDTO.getStudentId(), studentInfoDTO );
